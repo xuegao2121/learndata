@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内部拖拽实现</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="libs/jquery-1.9.1.js"></script>
+    <script src="libs/three.js"></script>
+    <script src="libs/tween.min.js"></script>
+    <script src="libs/TrackballControls.js"></script>
+    <script src="libs/stats.min.js"></script>
+</head>
+<body>
+    <script>
+        var container,stats;
+
+        var camera, controls, scene, projector, renderer;
+
+        var objects = [], plane;
+
+        var mouse = new THREE.Vector2(), offect = new THREE.Vector3(),
+            INTERSECTED, SELECTED;
+
+        init();
+
+        animate();
+
+        // 初始化场景
+        function init() {
+            // 创建WebGL 层
+            container = document.createElement('div');
+            // 把上面的层放到body里面
+            document.body.appendChild( container );
+
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.z = 3000;
+
+            controls = new THREE.TrackballControls(camera);
+            // 变焦速度
+            controls.zoomSpeed = 1.0;
+            // 旋转速度
+            controls.rotationSpeed = 1.0;
+            // 平移速度
+            controls.panSpeed = 1.0;
+            controls.noZoom = false;
+            controls.noPan = true;
+            // 开启惯性
+            controls.staticMoving = false;
+            // 动态阻尼系数
+            controls.dynamicDampingFactor = 0.3;
+
+            scene = new THREE.Scene();
+
+            // 环境光
+            var ambientLight = new THREE.AmbientLight( Math.random() * 0xffffff);
+            scene.add(ambientLight);
+
+            var directionalLight = new THREE.DirectionalLight( Math.random() * 0xffffff);
+            // 把平行光放在y轴向上的无穷远处
+            directionalLight.position.set( 0, 1, 0);
+            scene.add(directionalLight);
+
+            var pointLight = new THREE.PointLight( 0xffffff, 1, 500);
+            pointLight.position.set( 0, 0, -200)
+            scene.add(pointLight);
+
+            var sphereGeometry = new THREE.SphereGeometry( 70, 32, 16);
+
+            for (var i = 0; i < 50; i++ ){
+
+                var object = new THREE.Mesh(sphereGeometry, new THREE.MeshLambertMaterial({color : Math.random() * 0xffffff}));
+
+                object.material.ambient = object.material.color;
+
+                //随机防止一个位置
+                object.position.x = Math.random() * 3000 - 1500;
+                object.position.y = Math.random() * 1800 - 1000;
+                object.position.z = Math.random() * 2400 - 1200;
+
+                scene.add(object);
+
+                // 放到对象数组中去
+                objects.push( object );
+
+            }
+
+            // 创建平面
+            plane = new THREE.Mesh( new THREE.PlaneGeometry(2000, 2000, 8,8), new THREE.MeshBasicMaterial({ color : 0x000000, opacity : 0.25, transparent : true, wireframe: true}));
+            plane.visible = true;
+            scene.add(plane);
+
+            // 创建一个屏幕和场景转换的工具
+            projector = new THREE.Projector();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true});
+
+            renderer.sortObjects = false;
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            renderer.shadowMap.enabled= true;
+            // 设置阴影地图是 纹理阴影
+            renderer.shadowMapType = THREE.PCFShadowMap;
+            // 把渲染成的所有页面加入到webgl层中
+            container.appendChild( renderer.domElement);
+
+            // 添加性能窗口
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.top = '0px';
+            container.appendChild( stats.domElement );
+
+            // 加入鼠标拖动对象的一系列监听事件
+            renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+            renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
+            renderer.domElement.addEventListener('mouseup', onDocumentMouseUp, false);
+
+            // 窗口改变大小时的监听事件
+            window.addEventListener('resize', onWindowResize, false);
+
+        }
+
+        // 窗口改变大小触发的事件
+        function onWindowResize() {
+            // 改变相机的aspect属性为当前窗口的宽度
+            camera.aspect = window.innerWidth / window.innerHeight;
+            // 更新相机的投影矩阵
+            camera.updateProjectionMatrix();
+            // 重新设置场景宽高
+            renderer.setSize(window.innerWidth, window.innerHeight );
+        }
+
+        // 鼠标移动触发的函数
+        function onDocumentMouseMove( event ) {
+            // 阻止本来的默认时间, 比如浏览器的默认右键事件是弹出浏览器的选项
+            event.preventDefault();
+
+            // mouse.x 指 鼠标的x到屏幕y轴的距离与屏幕宽的一半的值,绝对值不超过1
+            // mouse.y 指 鼠标的y到屏幕x轴的距离与屏幕宽的一半的值,绝对值不超过1
+            mouse.x = ( event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - ( event.clientY / window.innerHeight) * 2  + 1;
+
+            var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+
+            //屏幕和场景转换工具根据照相机,把这个向量从屏幕转换为场景中的向量
+            projector.unprojectVector( vector, camera);
+
+            //新建一条从相机的位置到vector向量的一道光线
+            var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position).normalize());
+
+            // 是否有东西被选中
+            if (SELECTED){
+                // 获取射线射到物体所在水平面上所在元素的集合,这样就可以限制每次拖动的距离不超过水平面panel
+                var intersects = raycaster.intersectObject(plane);
+
+                if (intersects.length > 0){
+                    // 新位置付给选中物体
+                    SELECTED.position.copy(intersects[0].point.sub( offect ));
+                }
+                return;
+            }
+
+            // 否则的话光想和所有物体相交,返回相交的物体
+            var intersects = raycaster.intersectObjects( objects );
+
+            //如果有物体相交
+            if (intersects.length > 0){
+                //并且相交物体不是上一个物体
+                if ( INTERSECTED != intersects[0].object){
+                    INTERSECTED = intersects[0].object;
+                    //改变水平名panel位置
+                    plane.position.copy(INTERSECTED.position);
+                    //把水平面指向相机方向
+                    plane.lookAt(camera.position);
+                }
+
+                //改变鼠标的样式
+                container.style.cursor=  'pointer';
+            }else{
+                // 改变鼠标的样式
+                container.style.cursor = 'auto';
+            }
+        }
+
+        // 鼠标按下触发的方法
+        function onDocumentMouseDown( event ){
+            // 阻止本來瀏覽器默認的實踐,刺入瀏覽器默認是右鍵彈出選項
+            event.preventDefault();
+
+            var vector= new THREE.Vector3(mouse.x, mouse.y, 0.5);
+            projector.unprojectVector(vector, camera);
+
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+            var intersects = raycaster.intersectObjects(objects);
+
+            if ( intersects.length > 0){
+                //不能改變視角
+                controls.enabled = false;
+                SELECTED = intersects[0].object;
+                var intersects = raycaster.intersectObject( plane );
+
+                offset.copy( intersects[0].point ).sub( plane.position );
+
+                //改變鼠標的樣式
+                container.style.cursor = 'move';
+            }
+
+        }
+        // 鼠標抬起觸發的方法
+        function onDocumentMouseUp( event ){
+            event.preventDefault();
+
+            container.enabled = true;
+
+            if (INTERSECTED){
+                plane.position.copy( INTERSECTED.position );
+
+                SELECTED = null;
+            }
+            //改變鼠標的樣式
+            container.style.cursor = 'auto';
+        }
+
+        function animate(){
+            requestAnimationFrame(animate);
+
+            render();
+
+            stats.update();
+        }
+
+        function render(){
+            controls.update();
+
+            renderer.render(scene, camera);
+        }
+
+
+    </script>
+</body>
+</html>

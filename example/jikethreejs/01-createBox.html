@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>three one example</title>
+    <script src="libs/three.js"></script>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<script>
+
+    var scene = new THREE.Scene();
+
+    var boxGeometry = new THREE.BoxGeometry(100,100,100);
+    var boxMaterial = new THREE.MeshLambertMaterial({color : 0xff0000});
+    var box = new THREE.Mesh(boxGeometry,boxMaterial);
+    scene.add(box);
+
+    var camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000);
+    camera.position.set(200,200,200);
+    camera.lookAt(scene.position);
+
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(300,400,200);
+    scene.add(spotLight);
+
+    var webGLRenderer = new THREE.WebGLRenderer();
+    webGLRenderer.setSize(window.innerWidth,window.innerHeight);
+    document.body.appendChild(webGLRenderer.domElement);
+
+    // 最后一步不要忘记
+    webGLRenderer.render(scene,camera);
+</script>
+</body>
+</html>
