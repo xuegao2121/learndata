@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数问题解决</title>
+</head>
+<body>
+<script>
+
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        this.sayName = sayName;
+    }
+    var person1 = new Person('dxy',23);
+    var person2 = new Person('wzj',25);
+
+    //console.log(person1.sayName == person2.sayName);//sayName 方法不一样，因为每个Person实例都会包含不同的Function实例
+
+    //为了解决这种问题可以把sayName方法定义在外部
+    function sayName() {
+        console.log(this.name);
+    }
+
+    // 此时返回true，因为外部只创建了一个sayName的实例
+    console.log(person1.sayName == person2.sayName);
+    person1.sayName();
+    person2.sayName();
+
+
+</script>
+</body>
+</html>

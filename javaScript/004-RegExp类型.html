@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RegExp类型</title>
+</head>
+<body>
+<script>
+    // /**
+    //  * 匹配字符串中所有"at"的实例
+    //  * @type {RegExp}
+    //  */
+    // var pattern = /at/g;
+    //
+    // /**
+    //  * 匹配第一个"bat" 或 "cat",不区分大小写
+    //  * @type {RegExp}
+    //  */
+    // var pattern1 = /[bc]at/i;
+
+    /**
+     * 匹配所有以"at"结尾的三个字符的组合,不区分大小写
+     * @type {RegExp}
+     */
+    // var pattern2 = /.at/gi;
+    //
+    // var text = "mom and dad and baby";
+    //
+    // var pattern3 = /mom( and dad( and baby)?)?/gi;
+    // var matches = pattern3.exec(text);
+
+
+    // var text = "cat,bat,sat,fat";
+    // var pattern3 = /at/g;
+    // var matches = pattern3.exec(text);
+
+    var text = "112-32-111-222";
+    var pattern = /\d{3}-\d{2}-\d{3}/;
+
+    if (pattern.test(text)){
+        console.log("the pattern was matched");
+    }
+
+
+
+
+
+</script>
+</body>
+</html>

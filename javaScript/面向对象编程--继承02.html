@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的继承</title>
+</head>
+<body>
+<script>
+
+    function Person(name,age){
+        this.name = name;
+        this.age = age;
+        this.eat = function () {
+            console.log('person is eating!');
+        }
+    }
+
+    function Coder(){
+        this.write = function () {
+            console.log("coder!");
+        }
+    }
+    // 将Coder的prototype对象指向一个Person实例,这样等于删除了Coder原先的prototype的值,并赋了一个新值
+    Coder.prototype = new Person('wzj',23);
+    // 如果替换了构造函数的Protype对象就必须要将这个属性重新指回原来的构造函数
+    Coder.prototype.constructor = Coder;
+
+    var coder = new Coder();
+    console.log(coder.name);//打印 wzj
+    coder.write();
+
+
+</script>
+</body>
+</html>

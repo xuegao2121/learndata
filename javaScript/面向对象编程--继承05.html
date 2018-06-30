@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的继承</title>
+</head>
+<body>
+<script>
+    /**
+     * 拷贝继承方式
+     * @constructor
+     */
+    function Person(name, age){
+        this.name = name;
+        this.age = age;
+    }
+    Person.prototype.eat = function () {
+        console.log("eating!");
+    }
+    Person.prototype.run = function () {
+        console.log("run......");
+    }
+
+    function Child(){
+        //还是比较喜欢这种方法,可以把父对象的私有属性也继承过来,但是这样就违反了继承的规则了
+        //一般继承的话就是 继承父对象的方法并不继承属性,因为属性是私有的,而方法可以继承
+        Person.apply(this,arguments);
+        this.write = function () {
+            console.log("child!");
+        }
+    }
+    extend(Child, Person);
+    var child = new Child('wzj',24);
+    console.log(child.name);
+    child.eat();
+    child.write();
+    child.run();
+
+
+    /**
+     * 把父对象的prototype对象的属性一一拷贝给Child对象的prototype对象.
+     * @param Child
+     * @param Parent
+     */
+    function extend(Child, Parent){
+        for (var i in Parent.prototype){
+            Child.prototype[i] = Parent.prototype[i];
+        }
+        Child.prototype.uber = Parent.prototype;
+    }
+
+</script>
+</body>
+</html>

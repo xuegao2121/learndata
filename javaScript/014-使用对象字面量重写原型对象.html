@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用对象字面量来重写原型属性</title>
+</head>
+<body>
+<script>
+
+    function Person() {
+
+    }
+    // 把原型对象指向了一个以字面来方式创建的对象，但是有一个例外 constructor 属性不在是 Person了
+    Person.prototype = {
+        // 若 constructor的值 真的很重要的话，就在这里显示声明这个属性的指向
+        constructor:Person, //
+        name : 'wzj',
+        age : 23,
+        sayName : function () {
+            alert(this.name);
+        }
+    }
+    var person = new Person();
+    person.name = 'dxy';
+    person.sayName();
+    console.log(Person.prototype.constructor);
+
+</script>
+</body>
+</html>

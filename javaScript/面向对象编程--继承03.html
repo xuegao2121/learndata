@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的继承</title>
+</head>
+<body>
+<script>
+
+    /**
+     * 继承的第三种方法: 直接继承prototype
+     * @param name
+     * @param age
+     * @constructor
+     */
+    function Person(){
+    }
+    Person.prototype.eat = function () {
+        console.log(" is eating!");
+    }
+
+    function Coder(){
+        this.write = function () {
+            console.log("coder!");
+        }
+    }
+
+    // 直接将Coder的prototype对象,指向Person的prototype对象
+    Coder.prototype = Person.prototype;
+    Coder.prototype.constructor = Coder;
+
+    var coder = new Coder();
+    coder.eat();
+
+
+
+</script>
+</body>
+</html>

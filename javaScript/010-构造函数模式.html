@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数模式</title>
+</head>
+<body>
+<script>
+
+    function Person(name, age, job) {
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.sayName = function () {
+            console.log(this.name);
+        }
+    }
+
+    function  Car(name, color) {
+        this.name = name;
+        this.color = color;
+        this.sayColor = function(name){
+            if (name == undefined){
+                console.log(this.name);
+            } else{
+                console.log(name);
+            }
+        };
+        this.cubes = [];
+        //添加方法
+        this.add = function (object) {
+            //从栈顶压入
+            this.cubes.push(object);
+        };
+        //移除方法，比较复杂需要判断该对象的压入位置
+        this.remove = function (object) {
+            if (this.cubes.length == 0){
+                console.log('array is empty!');
+            } else{
+                for (let i = 0; i < this.cubes.length; i++){
+                    if (this.cubes[i].uuid == object.uuid){
+                        //i：要删除的第一项的位置，1：要删除的项数
+                        this.cubes.splice(i,1);
+                    }
+                }
+            }
+        }
+    }
+    function Cube(name,color) {
+        this.name = name;
+        this.color = color;
+        this.uuid = createUUID();
+    }
+
+    function createUUID() {
+        return 'xxxx-xxxx-xxxx-xxxx'.replace(/[xy]/g,function (c) {
+            var r = Math.random()*16|0,v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        })
+    }
+    var car = new Car('dazhogn','red');
+    var cube = new Cube('dxy','yellow');
+    var cube2 = new Cube('wzj','black');
+
+    car.add(cube);
+    car.add(cube2);
+
+    car.remove(cube);
+
+    car.sayColor();
+    car.sayColor("green");
+
+
+    var person1 = new Person('dxy', 23, 'design');
+    var person2 = new Person('wzj', 35, 'coder');
+
+    console.log(typeof person1);
+    console.log(person1 == person2);
+
+</script>
+</body>
+</html>

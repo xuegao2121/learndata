@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+
+        var demo = {
+            //实现方法的连续调用,就return this.
+            smoke : function(){
+                console.log("smoke...,wzj cool!");
+                return this;
+            },
+            drink : function(){
+                console.log("drink...,wzj cool!");
+                return this;
+            },
+            perm : function(){
+                console.log("perm...,wzj cool!");
+                return this;
+            }
+        }
+        demo.drink().perm().smoke().perm().smoke().smoke().perm();
+
+        var demo2 = {
+            wife1 : {name : "小明"},
+            wife2 : {name : "小王"},
+            wife3 : {name : "小张"},
+            wife4 : {name : "小刘"},
+            sayWife : function(num) {
+                //属性名拼接,必须是中括号,实现,使用点号无法实现
+                return this['wife' + num];
+            }
+        };
+
+
+    </script>
+</body>
+</html>

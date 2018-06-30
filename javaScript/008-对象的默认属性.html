@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Object的 defineProperty()方法</title>
+</head>
+<body>
+<script>
+    var person = {};
+    Object.defineProperty(person,"name",{
+        writable : false,
+        value : "wangzhongjie"
+    });
+    console.log(person.name);
+    person.name = "dxy";
+    console.log(person.name);
+
+</script>
+</body>
+</html>

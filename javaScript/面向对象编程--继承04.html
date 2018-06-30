@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的继承</title>
+</head>
+<body>
+<script>
+
+    /**
+     * 利用空对象最为中介
+     * @constructor
+     */
+    function Person(){
+    }
+    Person.prototype.eat = function () {
+        console.log("eating!");
+    }
+
+    function Child(){
+        this.write = function () {
+            console.log("child!");
+        }
+    }
+    // var f = function () {};
+    // f.prototype = Person.prototype;
+    // Child.prototype = new f();
+    // Child.prototype.constructor = Child;
+    extend(Child, Person);
+
+    var child = new Child();
+    child.eat();
+    
+    function extend(Child, Person) {
+        var F = function () {
+            
+        };
+        F.prototype = Person.prototype;
+        Child.prototype = new F();
+        Child.prototype.constructor = Child;
+        // 可以使子对象直接调用父对象的方法
+        Child.uber = Person.prototype;
+    }
+
+
+
+
+</script>
+</body>
+</html>

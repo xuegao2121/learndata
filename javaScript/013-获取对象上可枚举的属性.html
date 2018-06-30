@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取对象可以枚举的属性</title>
+</head>
+<body>
+<script>
+
+    function Person() {
+
+    }
+
+    Person.prototype.name = 'dxy';
+    Person.prototype.age = 23;
+    Person.prototype.job = 'Softer Engineer';
+    Person.prototype.sayName = function () {
+        console.log(this.name);
+    }
+    // 通过Object.keys() 方法 获取对象上所有可以枚举的属性，参数是对象，返回字符串数组
+    var keys = Object.keys(Person.prototype);
+    console.log(keys);
+
+    //若是实例的话，没有自身的属性就不会有可以枚举的属性
+    var person = new Person();
+    person.name = 'wzj';
+    person.age = 23;
+    var key2 = Object.keys(person);
+    console.log(key2);
+
+    var key3 = Object.getOwnPropertyNames(person);
+    console.log(key3);
+
+</script>
+</body>
+</html>

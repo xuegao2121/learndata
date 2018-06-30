@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂模式</title>
+</head>
+<body>
+<script>
+
+    // 以这种函数封装的模式来弥补，js没有类的这一概念
+    function createPerson(name, age, job) {
+
+        var person = new Object();
+        person.name = name;
+        person.age = age;
+        person.job = job;
+
+        person.getName = function () {
+            console.log(this.name);
+        }
+        person.getAge = function () {
+            console.log(this.age);
+        }
+
+        return person;
+    }
+
+    var person1 = new createPerson('dxy', 20, 'design');
+    var person2 = new createPerson('wzj', 25, 'coder');
+
+    console.log(person1);
+    console.log(person2);
+    console.log(person1 == person2);
+    console.log(typeof person2);
+
+
+</script>
+</body>
+</html>

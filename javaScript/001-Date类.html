@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>date日期类</title>
+</head>
+<body>
+<script>
+    /**
+     * JavaScript的日期类 是根据java.util.Date类的基础上构建的.
+     *
+     * @type {number}
+     */
+    // var utc = Date.parse("May 24,2008");
+    // var date = new Date(utc);
+
+    /**
+     * 实际上如果这样写的也会在后台调用Date.parse()方法,来对字符串进行转换.
+     * @type {Date}
+     */
+    // var date1 = new Date("May 19,2018");
+    // var date2 = date1.getDate();
+
+    /**
+     * 使用UTC来创建时间,年份按数字算,月份 从0-11,天数也是数字,小时,0-23小时,分 0-59 秒 0-59
+     */
+        //中国标准时间:2014 年 6 月 7号 上午 9 点45分 34 秒 23毫秒
+    var date3 = new Date(2014, 5, 7, 9, 45, 34, 23);
+
+    /**
+     * Date.now()方法,调用这个方法时的日期和时间的毫秒数
+     */
+    // var start = Date.now();
+
+    //调用函数
+    // function fn() {
+    //     var a = 2 + 3;
+    //     a = a / 10 * 100 - 30;
+    //     return a;
+    // }
+
+    // var result = fn();
+    // console.log(result);
+    //
+    // //结束时间
+    // var stop = Date.now();
+    // var resultTime = stop - start;
+    // console.log("函数执行所用的毫秒数:" + resultTime);
+
+    var date = new Date(2018,5,7);
+    var dateString = date.toDateString();
+    var timeString = date.toTimeString();
+
+
+
+
+</script>
+</body>
+</html>

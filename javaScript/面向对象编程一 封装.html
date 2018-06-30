@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>封装概念理解</title>
+</head>
+<body>
+<script>
+
+    /**
+     * javaScript 面向对象编程
+     */
+
+    /**
+     * 一、构造函数模式
+     * 1、构造函数就是一个普通函数，首字母大写便于区分，内部具有 this 变量。
+     * 2、对构造函数使用new操作符，能生成实例，并且this会绑定在实例对象上。
+     * 3、通过new 关键字创建的对象都具有constructor属性。
+     * @param name
+     * @param age
+     * @constructor
+     */
+
+
+    // function person(name, age){
+    //     var person = new Object();
+    //     person.name = name;
+    //     person.age = age;
+    //     return person;
+    // }
+    //
+    // var person1 = person('wzj',25);//会返回一个对象
+    // var person2 = person('dxy',25);//也会返回一个对象
+
+
+
+
+    // function Person(name, age){
+    //     this.name = name;
+    //     this.age = age;
+    //     this.sayName = function () {
+    //         console.log(this.name);
+    //     }
+    // }
+    //
+    // var person1 = new Person('wzj',25);
+    // var person2 = new Person('dxy',23);
+    //
+    // console.log(person1.constructor == person2.constructor);//二者指向同一个构造函数,返回true
+    //
+    // console.log(person1 instanceof Person);//可以判断出实例对象和原型对象之间的关系,返回true
+
+    /**
+     * 二、构造函数问题
+     * 1、存在浪费内存的问题，若所有实例对象都具有相同的方法，
+     *    但是每次创建一个新对象的时候又把这个相同的方法给创建一遍
+     *    因此就会产生内存浪费的问题，例如下面的例子
+     */
+
+    // function Car(name, color){
+    //     this.name = name;
+    //     this.color = color;
+    //     this.sayName = function () {
+    //         console.log(this.name);
+    //     }
+    //
+    //     this.material = '金属';
+    //     this.start = function () {
+    //         console.log("启动引擎!")
+    //     }
+    // }
+    //
+    // var car1 = new Car('梅赛德斯',"黑色");
+    // var car2 = new Car('凯迪拉克','白色');
+    //
+    // //这个方法每个对象都具有
+    // car1.start();
+    // car2.start();
+    // console.log(car1.start == car2.start);//返回false,因为所有的实例的这个方法 都是存在一个自己独立的地址中
+
+    /**
+     * 三、javaScript 规定每个构造函数都具有一个 prototypr 属性。
+     *  这个属性指向一个对象，并且这个对象的所有属性和方法都会被构造函数的实例所继承
+     */
+    function Car2(name, color){
+        this.name = name;
+        this.color = color;
+        this.sayName = function () {
+            console.log(this.name);
+        }
+    }
+
+    //通过 prototype 来实现共有方法的抽取,并且实现了对象方法的继承
+    Car2.prototype.start = function () {
+        console.log("引擎启动!")
+    }
+    Car2.prototype.material = '金属';
+
+    Car2.prototype.name = "default";
+    Car2.prototype.sayName = function () {
+        console.log(this.name+"覆盖构造函数中已经具有的方法!")
+    }
+
+    var car = new Car2('梅赛德斯','黑色');
+
+    //删除对象car 中的方法sayName(),此时对象本身并不具有这个方法
+    delete (car.sayName);
+    delete (car.name);
+
+    car.sayName();//打印梅赛德斯
+    console.log(car.name);//打印梅赛德斯
+    console.log(car.material);//打印黑色
+
+
+    /**
+     * 此时所有的实例的start方法和material属性,其实都指向同一个内存地址,即 指向prototype对象.
+     * @type {Car2}
+     */
+    // var car1 = new Car2('梅赛德斯','黑色');
+    // var car2 = new Car2('凯迪拉克','白色');
+    //
+    // car1.start();
+    // car2.start();
+    // console.log(car1.start == car2.start);//返回true,因为所有实例的方法都指向同一个地址
+    //
+    // /**
+    //  * 四、Prototype的验证方法
+    //  * 1、isPrototypeOf():   用来判断,某个prototype对象和某个实例之间的关系.
+    //  * 2、hasOwnPrototype(): 用来判断,某个属性是实例自身的属性还是继承自Prototype对象的属性.
+    //  * 3、in：               用来判断某个势力是否含有某个实例，不管是否是自身属性还是prototype对象的属性
+    //  *                       还可以用来遍历某个对象的 所有属性。
+    //  */
+    // console.log(Car2.prototype.isPrototypeOf(car1));//true
+    // console.log(car1.hasOwnProperty('start'));//false start是 prototype对象的属性
+    // console.log(car1.hasOwnProperty('name')); //true name是car1自身的属性
+    //
+    // console.log('start' in car1);//true
+    // console.log('name' in car1); //true
+    // console.log('age' in car1);  //false
+    // console.log('-------------------------\n')
+    // for (var prop in car1){
+    //     console.log("car1["+prop+"] = "+car1[prop]);
+    // }
+</script>
+</body>
+</html>

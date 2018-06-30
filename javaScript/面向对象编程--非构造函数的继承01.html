@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非构造函数的继承</title>
+</head>
+<body>
+<script>
+
+    var Chinese= {
+        nation : '中国'
+    }
+
+    var Doctor= {
+        career : '医生'
+    }
+
+    /**
+     * 使用 object函数利用 prototype链来实现继承
+     * 此函数的目的: 把子对象的prototype属性 指向父对象
+     */
+    function object(object){
+        function f(){};
+
+        f.prototype = object;
+
+        return new f();
+    }
+    var Dector = object(Chinese);
+
+    //然后再加上对象本身的属性,请问如果有无数个属性怎么把?
+    Dector.career = '医生';
+
+
+
+</script>
+</body>
+</html>

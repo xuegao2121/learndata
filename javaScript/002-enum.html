@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对象枚举</title>
+</head>
+<body>
+<script>
+    var arr = [1, 2, 3, 4, 5, 6, 7, 8];
+    //遍历,枚举 enumeration
+    for (var i = 0; i < arr.length; i++) {
+        console.log(arr[i]);
+        console.log()
+
+    }
+    //forin 循环
+    var obj = {
+        name: "wzj",
+        age: 123,
+        sex: "male",
+        height: 180,
+        weight: 75,
+        __proto__: {
+            lastName: 'wzj',
+            good: 25,
+            asdas: "male"
+        }
+    }
+    for (var prop in obj) {
+        //系统的底层原理: obj.name -----> obj["name"];
+        // hasOwnProperty 用来过滤不是自己的属性
+        if (obj.hasOwnProperty(prop)) {
+            //所以可以应用到下面的forin循环,循环出obj的值
+            console.log(prop + "..." + obj[prop]);
+        }
+    }
+
+    // in 关键字的使用,是用来判断能不能在对象上调用这个属性
+    console.log("name" in obj);
+    console.log("height" in obj);
+
+
+    // instanceof 的用法
+    // A instanceof B :意思是,A对象 是不是 B 构造函数构造出来的
+    // 意思是:看 A 对象的原型链上,有没有 B 的原型
+    function Person(){
+
+    }
+    var person = new Person();
+    //对象
+    var obj = {
+
+    }
+    //数组
+    var arr = [];
+    if (obj instanceof Array){
+        console.log("obj 是 数组")
+    } else{
+        console.log("obj 不是 数组!")
+    }
+    if (arr instanceof Array){
+        console.log("arr 是 数组")
+    }
+</script>
+
+</body>
+</html>

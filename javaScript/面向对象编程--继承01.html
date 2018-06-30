@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的继承</title>
+</head>
+<body>
+<script>
+    //对象之间继承的五种方法
+
+    function Person(name,age){
+        this.name = name;
+        this.age = age;
+        this.eat = function () {
+            console.log('person is eating!');
+        }
+    }
+
+    /**
+     * 使Coder继承Person
+     * 方法一: 通过构造函数进行绑定,使用call或者apply方法,将父对象的构造函数绑定在子对象上
+     * @constructor
+     */
+    function Coder(){
+        Person.apply(this,arguments);
+        this.write = function () {
+            console.log("coder!");
+        }
+    }
+    var coder = new Coder('wzj',25);
+    console.log(coder.name);//打印 wzj
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通过原型链实现继承</title>
+</head>
+<body>
+<script>
+
+    function Person(name) {
+        this.name = name;
+    }
+
+    Person.prototype.getValue = function (name) {
+
+        if (this.name == undefined){
+            return name;
+        }
+        return this.name;
+    }
+    Person.prototype.sayHello = function () {
+        alert('hello')
+    }
+
+    function Child(age) {
+        this.age = age;
+    }
+    // 继承Person, 让子类的原型指向父类的实例
+    Child.prototype = new Person();
+
+    Child.prototype.getChildValue = function () {
+        return this.age;
+    }
+
+    // 实例化 子类对象
+    var instance = new Child(23);
+    // 此时子类对象有了三个方法
+    instance.sayHello();
+    console.log(instance.getValue("dxy"));
+    console.log(instance);
+
+    // 此时使用instanceof 会发现，instance 同时是Child 、Person、Object的实例
+    console.log(instance instanceof Object);
+    console.log(instance instanceof Person);
+    console.log(instance instanceof Child);
+
+
+
+</script>
+</body>
+</html>

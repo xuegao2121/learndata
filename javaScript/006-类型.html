@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>typeof 类型</title>
+</head>
+<body>
+<script>
+    // var message = "hello world!";
+    //  console.log(typeof message);
+    //
+    //  if (message){
+    //      console.log("hello world!");
+    //  }
+    //  for (var propName in window){
+    //      document.write(propName+"\n");
+    //  }
+    //  start : for (var i = 0; i < 10; i++){
+    //      alert(i);
+    //  }
+    // start;
+    // var num = 0;
+    // for (var i = 0; i<= 10; i++){
+    //     if (i % 5 == 0){
+    //         continue;
+    //     }
+    //     num++;
+    //     alert(num);
+    // }
+    // var  num = 0;
+    //标签代表外部的foe循环
+    /*outermost:
+    for (var i = 0; i < 10; i++){
+        for (var j = 0; j < 10; j++){
+            if (i == 5 && j == 5){
+                break outermost;
+            }
+            num++;
+        }
+    }
+    console.log(num);*/
+    // var qs = location.search.substring(1);
+    // var hostName = location.hostname;
+    // var url = location.href;
+    //
+    // console.log(qs);
+    //使用with可以写成这样
+    // with(location){
+    //     var qs = search.substring(1);
+    //     var hostName= hostname;
+    //     var url= href;
+    // }
+    // obj = {
+    //    name : "wzj",
+    //    age : 23
+    // }
+    // function sayHi(){
+    //     console.log(arguments)
+    //     console.log("length:"+arguments.length+"[0]name:"+arguments[0]+"[1]name:"+arguments[1]+"[2]name:"+arguments[2])
+    // }
+    // sayHi( 123,"hello",111,obj,"123");
+    // function fn(args1,args2){
+    //     arguments[0] = 10;
+    //     arguments[1] = 20;
+    //     console.log(args1);//10
+    //     console.log(args2);//undefined,因为arguments[1] 和 args2不在一个内存空间,所以arguments[1]被赋值20
+    //     //但是args2仍然是undefined,arguments[1]的改变不会影响args2的值
+    // }
+    // fn(20);
+    // var obj = {
+    //     name: "wzj",
+    //     age: 25,
+    //     say: function () {
+    //         console.log("hello:" + this.name + " your age is " + this.age);
+    //     }
+    // }
+    //此时变量obj1 和obj指向的是同一个对象,所以改变obj1对象的属性,会影响到obj
+    //两个变量实际上引用的是同一个对象.
+    // var obj1 = obj;
+    // obj1.height = 174;
+    // obj1.sex = "male";
+    //
+    // var num = 20;
+
+    function fn(num1, obj) {
+        obj.message = "this is obj's message!";
+        //此时重新创建一个对象,但是这个obj第一个局部变量,会在函数执行完毕后立即销毁
+        //这个obj的指向的改变不会影响外部obj的引用,所以可以得出对象的传递也是通过值传递的不是通过引用传递的.
+        obj = {
+            name: "dxy",
+            age: 20
+        }
+        num1 += 10;
+        arr = arguments;
+        return arr;
+    }
+
+    fn(num, obj1);
+    console.log(obj instanceof Object);
+    console.log(typeof RegExp);
+
+</script>
+</body>
+</html>

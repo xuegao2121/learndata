@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js异常处理</title>
+</head>
+<body>
+<script>
+    try{
+       console.log("a");
+       console.log(b);
+       //报错后的代码不会执行---
+       console.log("c");
+    }catch(e){
+        //出错会执行此处的代码
+        console.log("errName:"+e.name +" errMessage"+e.message);
+    }finally {
+        console.log("这部分代码一定会执行!");
+    }
+    console.log("d");
+
+</script>
+<script type="text/javascript">
+    function sayHi(){
+        alert("hi");
+    }
+
+</script>
+
+</body>
+</html>

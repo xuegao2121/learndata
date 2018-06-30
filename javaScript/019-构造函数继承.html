@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通过构造函数继承</title>
+</head>
+<body>
+<script>
+    
+    function Person() {
+        this.colors = ['red', 'green', 'black'];
+    }
+    
+    function Child() {
+        Person.call(this);
+    }
+
+    var person = new Person();
+    var child = new Child();
+    child.colors.push('yellow');
+    console.log(person.colors);
+    console.log(child.colors);
+    
+</script>
+
+</body>
+</html>
