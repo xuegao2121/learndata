@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>可视化</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="libs/jquery-1.9.1.js"></script>
+    <script src="libs/build/three.js"></script>
+
+    <script src="libs/examples/js/Detector.js"></script>
+    <script src="libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="libs/examples/js/libs/stats.min.js"></script>
+
+    <script src="libs/examples/js/controls/TrackballControls.js"></script>
+
+    <script src="libs/examples/js/loaders/OBJLoader.js"></script>
+    <script src="libs/examples/js/loaders/MTLLoader.js"></script>
+
+</head>
+<body>
+<div id="WebGL-output"></div>
+<div id="Stats-output"></div>
+
+<script>
+    $(function () {
+        var stats = initStats();
+
+        var scene, camera, renderer, controls, light, gui;
+
+        function initScene() {
+            scene = new THREE.Scene();
+        }
+
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.set(0, 50, 50);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+        }
+
+        function initRenderer() {
+            if (Detector.webgl) {
+                renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    autoClear: true
+                });
+            } else {
+                renderer = new THREE.CanvasRenderer();
+            }
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x050505);
+            renderer.shadowMap.enabled = true;
+
+            $('#WebGL-output').append(renderer.domElement);
+        }
+
+        function initControls() {
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
+        }
+
+        function initLight() {
+            light = new THREE.SpotLight(0xE5E5E5);
+            light.position.set(-10, 20, 30);
+            light.castShadow = true;
+
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0xffffff));
+        }
+
+        function initGui() {
+            gui = {};
+            var guiControls = new dat.GUI();
+        }
+
+        function initContent() {
+            var mtlLoader = new THREE.MTLLoader();
+
+            mtlLoader.setPath('data/room/');
+            mtlLoader.load('room3.mtl', function (materials) {
+                var objLoader = new THREE.OBJLoader();
+
+                objLoader.setMaterials(materials);
+                objLoader.setPath('data/room/');
+                objLoader.load('room3.obj', function (object) {
+                    for (let i = 0; i < object.children.length; i++) {
+                        var id = object.children[i].id;
+
+                        // id = 125:地板, 94:两侧墙壁
+                        if (id == 125 || id == 94) {
+                            // 判断是否是网格对象
+                            if (object.children[i].isMesh) {
+                                object.children[i].receiveShadow = true;
+                                for (let j = 0; j < object.children[i].material.length; j++) {
+                                    // 设置双面渲染
+                                    object.children[i].material[j].side = THREE.DoubleSide;
+                                }
+                            }
+                        }
+                    }
+                    scene.add(object);
+                });
+            });
+        }
+
+        //声明raycaster和mouse变量
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        function onMouseDbClick(event) {
+            if (scene.getObjectByName('selectObject') != null) {
+                scene.remove(scene.getObjectByName('selectObject'));
+            }
+
+            //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
+            raycaster.setFromCamera(mouse, camera);
+
+            // 获取raycaster直线和所有模型相交的数组集合
+            var intersects = raycaster.intersectObjects(scene.children[2].children);
+
+            var object_id = intersects[0].object.id;
+            // 新建材质
+            var material = new THREE.MeshBasicMaterial({color : 0x9B30FF});
+            material.transparent = true;
+            material.opacity = 0.6;
+            // 聚焦点最近的一个物体
+            var geometry = intersects[0].object.geometry;
+
+            var selectObject = new THREE.Mesh(geometry, material);
+            selectObject.name = "selectObject";
+            scene.add(selectObject);
+
+            var label = document.getElementById('label');
+            if (label != null){
+                label.parentNode.removeChild(label);
+            }
+            var labelDiv =document.createElement('label');
+            labelDiv.id = "label";
+
+            labelDiv.style.left= event.clientX+'px';  // 指定创建的DIV在文档中距离左侧的位置
+            labelDiv.style.top= event.clientY+'px';  // 指定创建的DIV在文档中距离顶部的位置
+            labelDiv.style.border='1px solid #AB82FF'; // 设置边框
+            labelDiv.style.position='absolute'; // 为新创建的DIV指定绝对定位
+            labelDiv.style.width='100px'; // 指定宽度
+            labelDiv.style.height='50px'; // 指定高度
+            labelDiv.style.backgroundColor= "#B4EEB4";
+            labelDiv.style.borderTopStyle = "groove";
+            labelDiv.style.color = "#6495ED";
+            labelDiv.style.textAlign = "center";
+
+            document.body.appendChild(labelDiv);
+            document.getElementById('label').innerHTML = 'id:'+object_id;
+        }
+
+        // 初始化性能插件
+        function initStats() {
+            var stats = new Stats();
+
+            stats.setMode(0);
+
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+
+            $("#Stats-output").append(stats.domElement);
+
+            return stats;
+        }
+
+        function update() {
+            stats.update();
+            controls.update();
+            controls.handleResize();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function init() {
+            initScene();
+            initCamera();
+            initRenderer();
+            initControls();
+            initLight();
+            initGui();
+            initContent();
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('dblclick', onMouseDbClick, false);
+            window.addEventListener('click', onMouseClick, false);
+        }
+        function onMouseClick() {
+            var label = document.getElementById('label');
+            if (label != null){
+                label.parentNode.removeChild(label);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            update();
+        }
+
+        init();
+        animate();
+    });
+
+</script>
+</body>
+</html>

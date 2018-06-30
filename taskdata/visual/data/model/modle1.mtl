@@ -1,0 +1,376 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 03.05.2018 16:16:42
+
+newmtl wire_138008110
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.5412 0.0314 0.4314
+	Kd 0.5412 0.0314 0.4314
+	Ks 0.3500 0.3500 0.3500
+
+newmtl dantazijyz_HBLKHG_DM001T042
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T042.tif
+	map_Kd dantazijyz_HBLKHG_DM001T042.tif
+
+newmtl dantazijyz_HBLKHG_DM001T024
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T024.tif
+	map_Kd dantazijyz_HBLKHG_DM001T024.tif
+
+newmtl dantazijyz_HBLKHG_DM001T018
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T018.tif
+	map_Kd dantazijyz_HBLKHG_DM001T018.tif
+
+newmtl dantazijyz_HBLKHG_DM001T019
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T019.tif
+	map_Kd dantazijyz_HBLKHG_DM001T019.tif
+
+newmtl dantazijyz_HBLKHG_DM001T020
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T020.tif
+	map_Kd dantazijyz_HBLKHG_DM001T020.tif
+
+newmtl dantazijyz_HBLKHG_DM001T021
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T021.tif
+	map_Kd dantazijyz_HBLKHG_DM001T021.tif
+
+newmtl dantazijyz_HBLKHG_DM001T022
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T022.tif
+	map_Kd dantazijyz_HBLKHG_DM001T022.tif
+
+newmtl dantazijyz_HBLKHG_DM001T023
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T023.tif
+	map_Kd dantazijyz_HBLKHG_DM001T023.tif
+
+newmtl dantazijyz_HBLKHG_DM001T025
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T025.tif
+	map_Kd dantazijyz_HBLKHG_DM001T025.tif
+
+newmtl dantazijyz_HBLKHG_DM001T026
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T026.tif
+	map_Kd dantazijyz_HBLKHG_DM001T026.tif
+
+newmtl dantazijyz_HBLKHG_DM001T027
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T027.tif
+	map_Kd dantazijyz_HBLKHG_DM001T027.tif
+
+newmtl dantazijyz_HBLKHG_DM001T028
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T028.tif
+	map_Kd dantazijyz_HBLKHG_DM001T028.tif
+
+newmtl dantazijyz_HBLKHG_DM001T029
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T029.tif
+	map_Kd dantazijyz_HBLKHG_DM001T029.tif
+
+newmtl dantazijyz_HBLKHG_DM001T030
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T030.tif
+	map_Kd dantazijyz_HBLKHG_DM001T030.tif
+
+newmtl dantazijyz_HBLKHG_DM001T017
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T017.tif
+	map_Kd dantazijyz_HBLKHG_DM001T017.tif
+
+newmtl dantazijyz_HBLKHG_DM001T031
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T031.tif
+	map_Kd dantazijyz_HBLKHG_DM001T031.tif
+
+newmtl dantazijyz_HBLKHG_DM001T032
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T032.tif
+	map_Kd dantazijyz_HBLKHG_DM001T032.tif
+
+newmtl dantazijyz_HBLKHG_DM001T033
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T033.tif
+	map_Kd dantazijyz_HBLKHG_DM001T033.tif
+
+newmtl dantazijyz_HBLKHG_DM001T034
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T034.tif
+	map_Kd dantazijyz_HBLKHG_DM001T034.tif
+
+newmtl dantazijyz_HBLKHG_DM001T035
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T035.tif
+	map_Kd dantazijyz_HBLKHG_DM001T035.tif
+
+newmtl dantazijyz_HBLKHG_DM001T036
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T036.tif
+	map_Kd dantazijyz_HBLKHG_DM001T036.tif
+
+newmtl dantazijyz_HBLKHG_DM001T037
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T037.tif
+	map_Kd dantazijyz_HBLKHG_DM001T037.tif
+
+newmtl dantazijyz_HBLKHG_DM001T038
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T038.tif
+	map_Kd dantazijyz_HBLKHG_DM001T038.tif
+
+newmtl dantazijyz_HBLKHG_DM001T039
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T039.tif
+	map_Kd dantazijyz_HBLKHG_DM001T039.tif
+
+newmtl dantazijyz_HBLKHG_DM001T040
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T040.tif
+	map_Kd dantazijyz_HBLKHG_DM001T040.tif
+
+newmtl dantazijyz_HBLKHG_DM001T041
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka dantazijyz_HBLKHG_DM001T041.tif
+	map_Kd dantazijyz_HBLKHG_DM001T041.tif

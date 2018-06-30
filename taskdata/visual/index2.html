@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>可视化</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="libs/jquery-1.9.1.js"></script>
+    <script src="libs/build/three.js"></script>
+
+    <script src="libs/examples/js/Detector.js"></script>
+    <script src="libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="libs/examples/js/libs/stats.min.js"></script>
+
+    <script src="libs/examples/js/controls/TrackballControls.js"></script>
+
+    <script src="libs/examples/js/loaders/OBJLoader.js"></script>
+    <script src="libs/examples/js/loaders/MTLLoader.js"></script>
+
+    <script src="libs/extend/ThreeBSP.js"></script>
+
+</head>
+<body>
+<div id="WebGL-output"></div>
+<div id="Stats-output"></div>
+
+<script>
+    $(function () {
+        var stats = initStats();
+
+        var scene, camera, renderer, controls, light, gui, labelPlane, fontMesh, bspObject;
+
+        // 初始化场景
+        function initScene() {
+            scene = new THREE.Scene();
+        }
+
+        // 初始化相机
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.set(0, 50, 50);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+        }
+
+        // 初始化渲染器
+        function initRenderer() {
+            if (Detector.webgl) {
+                renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    autoClear: true
+                });
+            } else {
+                renderer = new THREE.CanvasRenderer();
+            }
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x050505);
+            renderer.shadowMap.enabled = true;
+
+            $('#WebGL-output').append(renderer.domElement);
+        }
+
+        // 初始化控制控件
+        function initControls() {
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
+        }
+
+        // 初始化灯光
+        function initLight() {
+            light = new THREE.SpotLight(0xE5E5E5);
+            light.position.set(-10, 20, 30);
+            light.castShadow = true;
+
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0xffffff));
+        }
+
+        // 初始化gui
+        function initGui() {
+            gui = {};
+            var guiControls = new dat.GUI();
+        }
+
+        // 加载模型
+        function initContent() {
+            var mtlLoader = new THREE.MTLLoader();
+
+            mtlLoader.setPath('data/room/');
+            mtlLoader.load('room3.mtl', function (materials) {
+                var objLoader = new THREE.OBJLoader();
+
+                objLoader.setMaterials(materials);
+                objLoader.setPath('data/room/');
+                objLoader.load('room3.obj', function (object) {
+                    for (let i = 0; i < object.children.length; i++) {
+                        var id = object.children[i].id;
+
+                        // id = 125:地板, 94:两侧墙壁
+                        if (id == 125 || id == 94) {
+                            // 判断是否是网格对象
+                            if (object.children[i].isMesh) {
+                                object.children[i].receiveShadow = true;
+                                for (let j = 0; j < object.children[i].material.length; j++) {
+                                    // 设置双面渲染
+                                    object.children[i].material[j].side = THREE.DoubleSide;
+                                }
+                            }
+                        }
+                    }
+                    scene.add(object);
+                });
+            });
+        }
+
+
+        function onMouseClick(event) {
+            event.preventDefault();
+
+            //声明raycaster和mouse变量
+            var raycaster = new THREE.Raycaster();
+            var mouse = new THREE.Vector2();
+
+            if (scene.getObjectByName('selectObject') != null) {
+                scene.remove(scene.getObjectByName('selectObject'));
+            }
+
+            //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
+            raycaster.setFromCamera(mouse, camera);
+
+            // 获取raycaster直线和所有模型相交的数组集合
+            var intersects = raycaster.intersectObjects(scene.children[2].children);
+
+            // 新建材质
+            var material = new THREE.MeshBasicMaterial({color: 0x9B30FF});
+            material.transparent = true;
+            material.opacity = 0.6;
+
+            // 聚焦点最近的一个物体
+            var selectGeometry = intersects[0].object.geometry;
+            var selectObject = new THREE.Mesh(selectGeometry, material);
+            selectObject.name = "selectObject";
+            scene.add(selectObject);
+
+            // 创建平面标签
+            createLabel(intersects[0].object);
+        }
+
+        // 创建BSP对象
+        function createBsp(originMesh, targetMesh, operator, material) {
+
+            // 将 Mesh 对象 转换成BSP对象
+            var originBsp = new ThreeBSP(originMesh);
+            var targetBsp = new ThreeBSP(targetMesh);
+
+            // 依据操作符进行布尔操作
+            var resultBsp;
+            switch (operator) {
+                case 'subtract':
+                    resultBsp = originBsp.subtract(targetBsp);
+                    break;
+                case 'union':
+                    resultBsp = originBsp.union(targetBsp);
+                    break;
+                case 'intersect':
+                    resultBsp = originBsp.intersect(targetBsp);
+                    break;
+            }
+            // 将转换完成后的 bsp 对象, 重新转换成 Mesh 对象,并加入材质
+            var resultMesh = resultBsp.toMesh(material);
+
+            // 更新材质和几何数据
+            resultMesh.material.flatshading = THREE.FlatShading;
+
+            // 更新纹理
+            resultMesh.material.needsUpdate = true;
+
+            // 重新计算几何平面法向量,和顶点法向量
+            resultMesh.geometry.computeFaceNormals();
+            resultMesh.geometry.computeVertexNormals();
+
+            return resultMesh;
+        }
+
+        // 加载字体
+        function loadFont(labelPlane, object) {
+            var fontLoader = new THREE.FontLoader();
+            var font;
+            fontLoader.load('libs/examples/fonts/gentilis_regular.typeface.json', function (response) {
+                // 传入的参数必须字符串
+                // font = new THREE.TextBufferGeometry('id:' + object.id, {
+                //     font: response,
+                //     size: 0.4,
+                //     height: 0.1
+                // });
+
+                font = new THREE.TextGeometry( 'id:' + object.id, {
+                    font: response,
+                    size: 0.4,
+                    height: 10
+                } );
+
+                //font.computeBoundingBox();
+                // font.computeVertexNormals();
+                var material = new THREE.MeshLambertMaterial({color: 0xff0000});
+
+                fontMesh = new THREE.Mesh(font, material);
+
+                //scene.add(fontMesh);
+
+                fontMesh.position.x = labelPlane.position.x - 0.6;
+                fontMesh.position.y = labelPlane.position.y -0.2;
+                fontMesh.position.z = labelPlane.position.z -2;
+                fontMesh.name = 'fontMesh';
+
+                // var cubeGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.2);
+                // var cubeMaterial = new THREE.MeshLambertMaterial({color : Math.random() * 0xffffff});
+                // var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+
+                bspObject = createBsp(labelPlane, fontMesh, 'subtract',  labelPlane.material);
+                bspObject.name = 'bspObject';
+                scene.add(bspObject);
+            })
+        }
+
+        // 创建平面标签
+        function createLabel(object) {
+            // 获取对象 id
+            var object_id = object.id;
+
+            // 获取缓存几何模型的点
+            var verticesArray = object.geometry.attributes.position.array;
+
+            // 获取选中对象的包围盒属性的vector3属性
+            var boxVector3 = object.geometry.boundingSphere.center;
+
+            var addPlane = scene.getObjectByName('labelPlane');
+            var addLine = scene.getObjectByName('addLine');
+            var fontMesh = scene.getObjectByName('fontMesh');
+            var bspMesh = scene.getObjectByName('bspObject');
+            if (bspObject != null && addLine != null){
+                scene.remove(bspMesh);
+                scene.remove(addLine);
+            }
+
+            if (addPlane != null || addLine != null && fontMesh != null) {
+                scene.remove(addPlane);
+                scene.remove(addLine);
+                scene.remove(fontMesh);
+            }
+
+            var planeGeometry = new THREE.BoxGeometry(1.5, 0.5, 0.06);
+            var planeMaterial = new THREE.MeshLambertMaterial({color: 0x436EEE});
+            //planeMaterial.side = THREE.DoubleSide;
+            labelPlane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+            var labelX = boxVector3.x;
+            var labelY = Math.abs((boxVector3.y)) * 2;
+            var labelZ = boxVector3.z;
+            if (labelY == 0) {
+                labelY = 10;
+            }
+            /**
+             * 当 id : 126, 94 时需要更改 label 的 y 轴位置
+             */
+            switch (object_id) {
+                case 125:
+                    labelY = Math.abs((boxVector3.y)) * 5;
+                    break;
+                case 126:
+                    labelY = Math.abs((boxVector3.y)) * 30;
+                    break;
+                case 94:
+                    labelY = Math.abs((boxVector3.y)) * 2000;
+                    break;
+            }
+            labelPlane.position.x = labelX;
+            labelPlane.position.y = labelY;
+            labelPlane.position.z = labelZ;
+
+            labelPlane.name = 'labelPlane';
+
+            // scene.add(labelPlane);
+
+            var verticesZ = verticesArray[2];
+            // 解决 椅子线 的位置显示问题
+            if (object_id >= 99 && object_id <= 111 || object_id == 96) {
+                verticesZ = -Math.abs(verticesZ);
+            }
+            // 绘制线段
+            var lineGeometry = new THREE.Geometry();
+            lineGeometry.vertices.push(new THREE.Vector3(verticesArray[0], verticesArray[1], verticesZ));
+            lineGeometry.vertices.push(labelPlane.position);
+
+            var lineMaterial = new THREE.LineBasicMaterial({color: 0x6A5ACD});
+            var line = new THREE.Line(lineGeometry, lineMaterial);
+            line.name = 'addLine';
+            scene.add(line);
+
+            console.log(object_id);
+            loadFont(labelPlane, object);
+        }
+
+        // 初始化性能插件
+        function initStats() {
+            var stats = new Stats();
+
+            stats.setMode(0);
+
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+
+            $("#Stats-output").append(stats.domElement);
+
+            return stats;
+        }
+
+        function update() {
+            stats.update();
+            controls.update();
+            controls.handleResize();
+
+            if (bspObject != null){
+                bspObject.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+            }
+
+            // 若标签为定义时,则不刷新
+            // if (labelPlane != null && fontMesh != null) {
+            //     labelPlane.lookAt(new THREE.Vector3(camera.position.x + 2, camera.position.y + 5, camera.position.z + 5));
+            //     fontMesh.lookAt(new THREE.Vector3(camera.position.x + 2, camera.position.y + 5, camera.position.z + 5));
+            // }
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function init() {
+            initScene();
+            initCamera();
+            initRenderer();
+            initControls();
+            initLight();
+            initGui();
+            initContent();
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('dblclick', onMouseClick, false);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            update();
+        }
+
+        init();
+        animate();
+    });
+
+</script>
+</body>
+</html>

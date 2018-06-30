@@ -1,0 +1,14 @@
+H:\三维模型库\断路器\t$m$p$$$\配电柜.max
+H:\三维模型库\断路器\t$m$p$$$\MAXFILES.TXT
+F:\3D下载\材质\拉丝不锈钢\mat\AS2_brushedmetal.jpg
+F:\3D下载\材质\铜\Copper (old, used, shiny)_by_Banshee3484\old_copper_diffuse.jpg
+F:\3D下载\材质\铜\Copper (old, used, shiny)_by_Banshee3484\old_copper_reflect_color.jpg
+F:\3D下载\材质\铜\Copper (old, used, shiny)_by_Banshee3484\old_copper_bump.jpg
+F:\3D下载\材质\铜\Copper (old, used, shiny)_by_Banshee3484\old_copper_glossieness.jpg
+D:\材质\公用贴图\标签通电.jpg
+D:\材质\公用贴图\标签断电.jpg
+D:\材质\公用贴图\标签4.jpg
+D:\材质\公用贴图\标签2.jpg
+D:\材质\公用贴图\标签5.jpg
+D:\材质\公用贴图\标签６.jpg
+D:\材质\公用贴图\biaoqian1.jpg
