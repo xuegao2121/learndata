@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>寄生组合式继承-继承的是原型</title>
+</head>
+<body>
+<script>
+    var i = 0;
+
+    function Person(name) {
+        this.name = name;
+        this.colors = ['red', 'green'];
+        console.log("第 " + i + "次调用!");
+        i++;
+    }
+
+    Person.prototype.sayName = function () {
+        console.log(this.name);
+    }
+
+    function Child(name, age) {
+        Person.call(this, name);        // 第二次调用 Person()
+        this.age = age;
+    }
+
+    // Child.prototype = new Person();     // 第一次调用 Person()
+    // Child.prototype.constructor = Child;
+
+    /**
+     * 寄生式组合式继承的方法
+     * 好处: 只调用了一次 父对象
+     * @param personType
+     * @param childType
+     */
+    function inheritPrototype(personType, childType) {
+        var prototype = object(personType.prototype);   // 创建对象
+        prototype.constructor = childType;              // 增强对象
+        childType.prototype = prototype;                // 指定对象
+    }
+    function object(o){
+        function F(){}
+        F.prototype = o;
+        return new F();
+    }
+
+    // 继承原型
+    inheritPrototype(Person, Child);
+    Child.prototype.sayAge = function () {
+        console.log(this.age);
+    }
+    var child = new Child("wzj", 24);
+    child.sayName();
+    child.sayAge();
+
+
+</script>
+</body>
+</html>
