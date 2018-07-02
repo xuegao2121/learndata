@@ -100,19 +100,18 @@
 
     var originMaterial = [];
     function changeMaterial(object) {
-        // 方法错误
-        var selectObject = scene.getObjectByName("selectObject");
-        if (selectObject != null){
-            scene.remove(selectObject);
-        }
 
         var material = new THREE.MeshLambertMaterial({
             color : 0xEE3B3B,
             transparent : true,
             opacity : 0.8
         });
-        object.material = material;
-        object.name = "selectObject";
+        if (!object.material.transparent){
+            originMaterial[0] = object.material;
+            object.material = material;
+        } else{
+            object.material = originMaterial[0];
+        }
     }
 
     function initControls() {
