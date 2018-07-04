@@ -165,6 +165,10 @@
         controls = new THREE.TrackballControls(camera, renderer.domElement);
         // controls.noRotate = true;
         controls.noPan = true;
+        // 视角最小距离
+        controls.minDistance = 1000;
+        // 视角最远距离
+        controls.maxDistance = 5000;
     }
 
     // 添加拖拽控件
