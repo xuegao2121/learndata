@@ -65,9 +65,9 @@
 <div id="blocker">
 
     <div id="instructions">
-        <span style="font-size:40px">Click to play</span>
+        <span style="font-size:40px">点击开始浏览</span>
         <br/>
-        (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+        (W, A, S, D = 移动, SPACE = 跳跃, MOUSE = 查看四周)
     </div>
 
 </div>
@@ -324,11 +324,11 @@
                 // 弹跳
                 if (canJump === true){
                     // 位置改变
-                    velocity.y += 350;
+                    velocity.y += 35;
                 }
                 // 若为 true的话可以实现跳起并加速落下的效果
                 // canJump = true;
-                canJump = false;
+                canJump = true;
                 break;
 
         }
@@ -411,15 +411,15 @@
 
         if ( onObject === true ) {
 
-            var flag = velocity.y = Math.max( 0, velocity.y );
-            console.log(flag);
-            velocity.z = 0;
+            velocity.y = Math.max( 0, velocity.y );
+
+            // velocity.z = 0;
 
             canJump = true;
             // 后退键刷线 z 轴的位置
-            if ( moveBack || moveLeft || moveRight ){
-                velocity.z -= direction.z * 1000.0 * delta;
-            }
+            // if ( moveBack || moveLeft || moveRight || moveLeft){
+            //     velocity.z -= direction.z * 1000.0 * delta;
+            // }
 
         }
 
