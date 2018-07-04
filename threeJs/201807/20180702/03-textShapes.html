@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>二维字体</title>
     <style>
-        body{
+        body {
             margin: 0;
             overflow: hidden;
         }
@@ -14,15 +14,14 @@
     <script src="../../libs/examples/js/controls/TrackballControls.js"></script>
     <script src="../../libs/examples/js/libs/dat.gui.min.js"></script>
     <script src="../../libs/examples/js/libs/stats.min.js"></script>
-    <script src="../../libs/extend/ThreeBSP.js"></script>
 </head>
 <body>
 <div id="WebGL-output"></div>
 <div id="Stats-output"></div>
 <script>
 
-    var  stats = initStats();
-    var  scene, camera, renderer, controls, light;
+    var stats = initStats();
+    var scene, camera, renderer, controls, light;
 
     function initScene() {
         scene = new THREE.Scene();
@@ -35,13 +34,13 @@
     }
 
     function initRenderer() {
-        if (Detector.webgl){
-            renderer = new THREE.WebGLRenderer({antialias : true});
-        }else{
+        if (Detector.webgl) {
+            renderer = new THREE.WebGLRenderer({antialias: true});
+        } else {
             renderer = new THREE.CanvasRenderer();
         }
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor( 0x050505 );
+        renderer.setClearColor(0x050505);
         document.body.appendChild(renderer.domElement);
     }
 
@@ -54,19 +53,18 @@
         loader.load('../../libs/examples/fonts/gentilis_regular.typeface.json', function (font) {
             // 材质
             var fontMaterial = new THREE.MeshLambertMaterial({
-               color : 0x912CEE,
-                side : THREE.DoubleSide
+                color: 0x912CEE,
+                side: THREE.DoubleSide
             });
-            var fontMaterial1 = new THREE.MeshLambertMaterial({
-                color : 0x545454,
-                transparent : true,
-                opacity : 0.6,
-                side : THREE.DoubleSide
+            var planeMaterial = new THREE.MeshLambertMaterial({
+                color: 0x545454,
+                transparent: true,
+                opacity: 0.6,
+                side: THREE.DoubleSide
             });
-
 
             var planeGeometry = new THREE.PlaneGeometry(600, 300);
-            var plane = new THREE.Mesh(planeGeometry, fontMaterial1);
+            var plane = new THREE.Mesh(planeGeometry, planeMaterial);
             plane.position.y += 40;
             scene.add(plane);
 
@@ -78,49 +76,10 @@
             fontGeometry.computeBoundingBox();
             var font = new THREE.Mesh(fontGeometry, fontMaterial);
             // x = 0,位置
-            font.position.x =  -0.5 * (fontGeometry.boundingBox.max.x - fontGeometry.boundingBox.min.x);
-            font.position.z += 2;
+            font.position.x = -0.5 * (fontGeometry.boundingBox.max.x - fontGeometry.boundingBox.min.x);
+            font.position.z += 1;
             scene.add(font);
-
-        })
-
-
-    }
-
-    // 创建BSP对象
-    function createBsp(originMesh, targetMesh, operator, material) {
-
-        // 将 Mesh 对象 转换成BSP对象
-        var originBsp = new ThreeBSP(originMesh);
-        var targetBsp = new ThreeBSP(targetMesh);
-
-        // 依据操作符进行布尔操作
-        var resultBsp;
-        switch (operator) {
-            case 'subtract':
-                resultBsp = originBsp.subtract(targetBsp);
-                break;
-            case 'union':
-                resultBsp = originBsp.union(targetBsp);
-                break;
-            case 'intersect':
-                resultBsp = originBsp.intersect(targetBsp);
-                break;
-        }
-        // 将转换完成后的 bsp 对象, 重新转换成 Mesh 对象,并加入材质
-        var resultMesh = resultBsp.toMesh(material);
-
-        // 更新材质和几何数据
-        resultMesh.material.flatshading = THREE.FlatShading;
-
-        // 更新纹理
-        resultMesh.material.needsUpdate = true;
-
-        // 重新计算几何平面法向量,和顶点法向量
-        resultMesh.geometry.computeFaceNormals();
-        resultMesh.geometry.computeVertexNormals();
-
-        return resultMesh;
+        });
     }
 
     function initControls() {
@@ -129,12 +88,12 @@
     }
 
     function initLight() {
-        light = new THREE.SpotLight( 0xffffff );
+        light = new THREE.SpotLight(0xffffff);
         light.position.set(-300, 600, -400);
         light.castShadow = true;
 
         scene.add(light);
-        scene.add(new THREE.AmbientLight( 0xC1C1C1 ));
+        scene.add(new THREE.AmbientLight(0xC1C1C1));
     }
 
     function initGui() {
@@ -147,7 +106,7 @@
 
     // 初始化性能插件
     function initStats() {
-        var stats= new Stats();
+        var stats = new Stats();
 
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.left = '0px';
@@ -185,6 +144,7 @@
         renderer.render(scene, camera);
         update();
     }
+
     init();
     animate();
 
