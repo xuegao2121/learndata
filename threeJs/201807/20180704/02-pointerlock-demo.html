@@ -297,7 +297,7 @@
 
     // 键盘按下触发的事件
     function onKeyDown(event) {
-        console.log(event.keyCode);
+
         switch (event.keyCode){
 
             case 87:// W
@@ -336,7 +336,7 @@
 
     // 键盘抬起触发的事件
     function onKeyUp() {
-        console.log(event.keyCode);
+
         switch (event.keyCode){
 
             case 87:// W
@@ -380,7 +380,7 @@
 
         // 射线起点的位置
         raycaster.ray.origin.copy( controls.getObject().position );
-        raycaster.ray.origin.y -= 10;
+        // raycaster.ray.origin.y -= 1;
 
         var intersects = raycaster.intersectObjects( objects );
         var onObject = intersects.length > 0;
@@ -408,12 +408,18 @@
         if ( moveLeft || moveRight ){
             velocity.x -= direction.x * 1000.0 * delta;
         }
+
         if ( onObject === true ) {
 
-            velocity.y = Math.max( 0, velocity.y );
-            velocity.x = 0;
+            var flag = velocity.y = Math.max( 0, velocity.y );
+            console.log(flag);
             velocity.z = 0;
+
             canJump = true;
+            // 后退键刷线 z 轴的位置
+            if ( moveBack || moveLeft || moveRight ){
+                velocity.z -= direction.z * 1000.0 * delta;
+            }
 
         }
 
@@ -426,11 +432,7 @@
             controls.getObject().position.y = 35;
             canJump = true;
         }
-
-
         prevTime = time;
-
-
     }
 
     function animate() {
