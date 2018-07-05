@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    var name = "this window";
+    
+    var object = {
+        name : "my object",
+        getName : function () {
+            return function () {
+                // 此时, 把外部作用域中的 this 对象保存在一个闭包能访问到的变量里,就可以让闭包访问对象了.
+                var that = this;
+                return that.name;
+            };
+        }
+    };
+
+    console.log(object.getName()()); // 输出 this window
+</script>
+
+</body>
+</html>
