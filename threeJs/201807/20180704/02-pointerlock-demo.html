@@ -27,7 +27,6 @@
 
             display: -webkit-box;
             display: -moz-box;
-            display: box;
 
             -webkit-box-orient: horizontal;
             -moz-box-orient: horizontal;
@@ -65,9 +64,9 @@
 <div id="blocker">
 
     <div id="instructions">
-        <span style="font-size:40px">点击开始浏览</span>
+        <span style="font-size:40px">单击开始浏览</span>
         <br/>
-        (W, A, S, D = 移动, SPACE = 跳跃, MOUSE = 查看四周)
+        (W, A, S, D = 移动,  MOUSE = 查看四周)
     </div>
 
 </div>
@@ -76,6 +75,13 @@
 
     // 使用说明的文档对象
     var instructions = document.getElementById('instructions');
+
+
+    if (instructions != null){
+        console.log("div 加载!");
+    }else{
+        document.body.removeChild(document.getElementById('instructions'))
+    }
 
     // http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
@@ -324,11 +330,11 @@
                 // 弹跳
                 if (canJump === true){
                     // 位置改变
-                    velocity.y += 35;
+                    velocity.y += 350;
                 }
                 // 若为 true的话可以实现跳起并加速落下的效果
                 // canJump = true;
-                canJump = true;
+                canJump = false;
                 break;
 
         }
@@ -380,7 +386,7 @@
 
         // 射线起点的位置
         raycaster.ray.origin.copy( controls.getObject().position );
-        // raycaster.ray.origin.y -= 1;
+        // raycaster.ray.origin.y -= 10;
 
         var intersects = raycaster.intersectObjects( objects );
         var onObject = intersects.length > 0;
@@ -410,17 +416,12 @@
         }
 
         if ( onObject === true ) {
-
-            velocity.y = Math.max( 0, velocity.y );
-
-            // velocity.z = 0;
-
+            console.log(controls.getObject().position);
+            velocity.y = Math.max(0, velocity.y);
+            if (moveForward == true){
+                velocity.z = 0;
+            }
             canJump = true;
-            // 后退键刷线 z 轴的位置
-            // if ( moveBack || moveLeft || moveRight || moveLeft){
-            //     velocity.z -= direction.z * 1000.0 * delta;
-            // }
-
         }
 
         controls.getObject().translateX( velocity.x * delta );
@@ -441,9 +442,6 @@
         if (objects.length > 0){
             pointer();
         }
-
-
-
         renderer.render(scene, camera);
         update();
     }
