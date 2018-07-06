@@ -129,7 +129,7 @@
         document.addEventListener('mozpointerlockerror', pointerlockerror, false);
         document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
-        // 点击解锁
+        // 判断一下当前浏览器是否支持鼠标锁定。并绑定到了鼠标点击事件：
         instructions.addEventListener('click', function (event) {
 
             // 使div隐藏
