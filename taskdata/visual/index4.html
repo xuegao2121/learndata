@@ -95,6 +95,7 @@
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
 
+            controls.noPan = true;
             controls.minDistance = 10;
             controls.maxDistance = 80;
             controls.maxPolarAngle = Math.PI * 0.5;
