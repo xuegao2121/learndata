@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多类名选择器</title>
+    <style>
+        .blue{
+            color: blue;
+        }
+        .font-size{
+            font-size: 100px;
+            font-family: "Angsana New";
+            font-weight: bolder;
+        }
+        .red{
+            color: red;
+        }
+        #test{
+            text-align: center;
+        }
+
+        span{
+            font-size: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="test">
+
+
+<!-- 多类名选择器, 后面的一个会覆盖掉前一个重复的属性-->
+    <span class="font-size red">G</span>
+    <span>o</span>
+    <span>o</span>
+    <span>l</span>
+    <span class="font-size blue">g</span>
+    <span>e</span>
+
+</div>
+</body>
+</html>
