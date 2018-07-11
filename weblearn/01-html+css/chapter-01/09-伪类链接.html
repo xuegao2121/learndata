@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        a:link{  /*未访问过的链接*/
+            color: #666666;
+            font-size: 20px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        a:visited{/*访问过的链接状态*/
+            color: #000;
+        }
+
+        a:hover{/*鼠标经过的状态*/
+            color: #fb0f3a;
+        }
+
+        a:active{/*鼠标按下时的状态*/
+            color: peru;
+        }
+        /*伪类链接选择器书写的时候顺序不要颠倒，就按照：link、visited、hover、active的顺序来写*/
+    </style>
+</head>
+<body>
+<!--
+
+.one 类选择器
+:one 伪类链接
+
+-->
+<a href="#">一点寒芒</a>
+</body>
+</html>

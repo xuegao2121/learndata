@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            width: 500px;
+            height: 200px;
+            background-color: mediumpurple;
+            text-align: center;
+            line-height: 200px;
+            font-size: 30px;
+            display: inline;/*inline ： 将块级元素div转换为行内元素、行内元素无宽高，一行可以放多个*/
+        }
+        span{
+            display: block;/*block ： 将行内元素转换为块级元素,块级元素独占一行*/
+            background-color: coral;
+            width: 500px;
+            height: 200px;
+            font-size: 30px;
+            text-align: center;
+            line-height: 200px;
+            border-radius: 20px;
+        }
+        a{
+            display: inline-block; /*将行内元素a标签转换为行内快元素*/
+            width: 200px;
+            height: 50px;
+            background-color: rosybrown;
+            text-decoration: none;
+            color: orangered;
+            font-size: 20px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 10px;
+        }
+        a:hover{
+            background-color: darksalmon;
+        }
+        #message{
+            display: block;
+            width: 200px;
+            height: 50px;
+            background-color: deepskyblue;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #message:hover{
+            background-color: lightcoral;
+        }
+        hr{
+            display: block;
+            height: 5px;
+            background-color: darkorchid;
+            border: none;
+            border-radius: 5px;
+        }
+        hr:hover{
+            background-color: palegreen;
+        }
+    </style>
+</head>
+<body>
+
+<!--其实每一个标签都是盒子，行内元素没有宽高，块级元素有宽高但是独占一行，行内快元素不仅有宽高，还可以在一行上存在
+    例如把a标签转换为行内快元素，就可以实现，在一行操作多个a标签，可以修改北京颜色，以及边框的类型
+-->
+
+<div>div是块级元素</div>
+<div>div是块级元素</div>
+<hr>
+<span>span是行内元素</span>
+<hr>
+<a href="javascript:message2();">这是a元素</a>
+<!--<hr>-->
+<a href="#" onclick="message();">这是a元素</a>
+<hr>
+
+<input id="message" type="button" value="message" onclick="message();">
+
+<script>
+
+    function message() {
+        alert("hello");
+    }
+
+    function message2() {
+        alert("使用a标签也可以调用js函数！");
+    }
+
+</script>
+</body>
+</html>
