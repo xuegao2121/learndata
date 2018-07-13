@@ -537,7 +537,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	function handleKeyDown( event ) {
 
-		//console.log( 'handleKeyDown' );
+		// console.log( 'handleKeyDown' );
 
 		switch ( event.keyCode ) {
 
@@ -670,6 +670,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	//
 
 	function onMouseDown( event ) {
+		console.log(event);
 
 		if ( scope.enabled === false ) return;
 
@@ -795,6 +796,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 
 	function onTouchStart( event ) {
+		// console.log(event.changedTouches[0].clientX);
+		// console.log(event.changedTouches[0].clientY);
 
 		if ( scope.enabled === false ) return;
 

@@ -21,6 +21,8 @@
     <script src="../../libs/jquery-1.9.1.js"></script>
     <script src="../../libs/examples/js/Detector.js"></script>
     <script src="../../libs/examples/js/controls/TrackballControls.js"></script>
+    <script src="../../libs/examples/js/controls/OrbitControls.js"></script>
+    <script src="../../libs/examples/js/controls/OrthographicTrackballControls.js"></script>
     <script src="../../libs/examples/js/libs/dat.gui.min.js"></script>
     <script src="../../libs/examples/js/libs/stats.min.js"></script>
 </head>
@@ -96,7 +98,7 @@
         var intersects = getIntersects(event);
 
         // 获取选中最近的 Mesh 对象
-        if (intersects.length != 0 && intersects[0].object instanceof THREE.Mesh) {
+        if (intersects.length !== 0 && intersects[0].object instanceof THREE.Mesh) {
             selectObject = intersects[0].object;
             changeMaterial(selectObject);
         } else {
@@ -107,8 +109,8 @@
     // 获取与射线相交的对象数组
     function getIntersects(event) {
         event.preventDefault();
-        console.log("event.clientX:"+event.clientX)
-        console.log("event.clientY:"+event.clientY)
+        console.log("event.clientX:"+event.clientX);
+        console.log("event.clientY:"+event.clientY);
 
         // 声明 raycaster 和 mouse 变量
         var raycaster = new THREE.Raycaster();
@@ -160,7 +162,7 @@
     function initControls() {
         controls = new THREE.TrackballControls(camera, renderer.domElement);
         // controls.noRotate = true;
-        controls.noPan = true;
+        // controls.noPan = true;
     }
 
     // 初始化灯光
@@ -217,7 +219,7 @@
     function update() {
         stats.update();
         controls.update();
-        controls.handleResize();
+        // controls.handleResize();
     }
 
     // 初始化
@@ -229,7 +231,7 @@
         initLight();
         initControls();
         initGui();
-        addEventListener('dblclick', onMouseDblclick, false);
+        addEventListener('click', onMouseDblclick, false);
         addEventListener('resize', onWindowResize, false);
         addEventListener('keydown', onKeyDown, false);
     }

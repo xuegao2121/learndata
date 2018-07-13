@@ -1,19 +1,23 @@
-
 $(function () {
 
-    let stats = initStats();
-
-    let scene, camera, renderer, controls, light, gui, selectObject;
+    let stats, scene, camera, renderer, controls, light, selectObject;
 
     let label = $("#label");
     let arrayId = [];
-    let clock = new THREE.Clock();
     let reset_camera = null;
 
-    init();
-    animate();
+    if (isMobile()) {
 
-    $('#reset-camera').bind('click', function (e) {
+        init();
+        animate();
+
+    }else{
+
+        $('#reset-camera').hide();
+
+    }
+
+    $('#reset-camera').on('touchstart', function (e) {
 
         reset_camera = true;
 
@@ -46,8 +50,8 @@ $(function () {
 
             renderer = new THREE.WebGLRenderer({
 
-                antialias: true
-
+                antialias: true,
+                autoClear: true
             });
 
         } else {
@@ -66,11 +70,11 @@ $(function () {
     // 控制控件
     function initControls() {
 
-        controls = new THREE.TrackballControls(camera, renderer.domElement);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         controls.minDistance = 5;
         controls.maxDistance = 100;
-        controls.dynamicDampingFactor = 0.5;
+        controls.maxPolarAngle = 0.5 * Math.PI;
 
     }
 
@@ -83,14 +87,6 @@ $(function () {
 
         scene.add(light);
         scene.add(new THREE.AmbientLight(0xffffff));
-
-    }
-
-    // 初始化gui
-    function initGui() {
-
-        gui = {};
-        // let guiControls = new dat.GUI();
 
     }
 
@@ -109,7 +105,6 @@ $(function () {
             objLoader.setPath('data/room/');
 
             objLoader.load('room3.obj', function (object) {
-                // object.scale.set(10, 10, 10);
 
                 for (let i = 0; i < object.children.length; i++) {
 
@@ -140,33 +135,15 @@ $(function () {
 
     }
 
-    // 键盘触发的事件
-    function onKeyDown(event) {
-
-        // 清除浏览器默认事件
-        event.preventDefault();
-
-        switch (event.keyCode) {
-
-            case 13: // Enter 键触发, 重置相机和轨迹控制
-
-                initCamera();
-                initControls();
-                break;
-
-        }
-
-    }
-
     // 获取 objects 与射线相交的对象数组
     function getIntersects(event, objects) {
 
         let rayCaster = new THREE.Raycaster();
         let mouse = new THREE.Vector2();
 
-        //通过鼠标点击的位置计算出rayCaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        //通过点击的位置计算出rayCaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+        mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
         // 通过鼠标点的位置和当前相机的矩阵计算出rayCaster
         rayCaster.setFromCamera(mouse, camera);
@@ -176,10 +153,8 @@ $(function () {
 
     }
 
-    // 鼠标单击触发的事件
-    function onMouseClick(event) {
-
-        event.preventDefault();
+    // 单击触发的事件
+    function onTouchStart(event) {
 
         function createMesh() {
 
@@ -235,7 +210,7 @@ $(function () {
             console.log("reset camera and controls!");
             reset_camera = false;
 
-        }else{
+        } else {
 
             alert("未选中 Mesh ！");
 
@@ -286,37 +261,41 @@ $(function () {
 
         }
     }
+    
+    // 判断设备
+    function isMobile () {
+        let ua = navigator.userAgent;
 
-    // 窗口变动触发的方法
-    function onWindowResize() {
+        let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+            isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
 
+            isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+
+            isMobile = isIphone || isAndroid;
+        return isMobile;
     }
-
 
     // 初始化
     function init() {
 
+        stats = initStats();
         initScene();
         initCamera();
         initRenderer();
         initControls();
         initLight();
-        initGui();
         initContent();
-        addEventListener('resize', onWindowResize, false);
-        addEventListener('click', onMouseClick, false);
-        addEventListener('keydown', onKeyDown, false);
+
+        THREEx.WindowResize(renderer, camera);
+        window.addEventListener('touchstart', onTouchStart, false);
 
     }
 
     function update() {
 
         stats.update();
-        controls.update(clock.getDelta());
+        controls.update();
 
         // 处理 div 的隐藏和显示
         if (!selectObject) {

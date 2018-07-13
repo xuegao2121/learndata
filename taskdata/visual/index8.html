@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #label {
+            position: absolute;
+            padding: 2%;
+            text-align: center;
+            font-size: 40px;
+            background: rgba(255, 255, 255, 0.6);
+            line-height: 1;
+            border-radius: 25px;
+        }
+
+        #reset-camera {
+            position: absolute;
+            padding: 2%;
+            width: 15%;
+            right: 0.1%;
+            top: 0.1%;
+            text-align: center;
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            line-height: 1;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="libs/jquery-1.9.1.js"></script>
+    <script src="libs/build/three.js"></script>
+    <script src="js/loadModel.js"></script>
+    <script src="libs/examples/js/Detector.js"></script>
+    <script src="libs/examples/js/libs/stats.min.js"></script>
+    <script src="libs/examples/js/controls/OrbitControls.js"></script>
+    <script src="libs/examples/js/loaders/OBJLoader.js"></script>
+    <script src="libs/examples/js/loaders/MTLLoader.js"></script>
+    <script src="libs/extend/THREEx.WindowResize.js"></script>
+</head>
+<body>
+
+<div id="WebGL-output"></div>
+<div id="Stats-output"></div>
+<div id="label"></div>
+<div id="reset-camera">重置视角</div>
+
+<script>
+    /**
+     * 加载三维模型
+     * @param url 文件路径
+     * @param name 模型名称
+     * @param domElement 渲染canvas
+     * @constructor
+     */
+
+    function Application(url, name, domElement) {
+
+        this.renderer = null;
+        this.canvas = domElement;
+        this.aspectRatio = window.innerWidth / window.innerHeight;
+        this.recalcAspectRatio = recalcAspectRatio();
+        this.scene = null;
+        this.defaultCamera = {
+            posCamera: new THREE.Vector3(-100.0, 60, 0),
+            posCameraTarget: new THREE.Vector3(0, 0, 0),
+            near: 0.1,
+            for: 1000,
+            fov: 45
+        };
+        this.camera = null;
+        this.light = null;
+        this.controls = null;
+        this.selectObject = null;
+        this.arrayId = [];
+
+
+        // 场景
+        this.initScene = function () {
+
+            this.scene = new THREE.Scene();
+
+        };
+
+        // 渲染器
+        this.initRenderer = function (clearColor, enabled) {
+
+            if (Detector.webgl) {
+
+                this.renderer = new THREE.WebGLRenderer({
+
+                    antialias: true,
+                    autoClear: true
+                });
+
+            } else {
+
+                this.renderer = new THREE.CanvasRenderer();
+
+            }
+
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setClearColor(clearColor);
+            this.renderer.shadowMap.enabled = enabled;
+            if (enabled) this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        };
+
+        // 相机
+        this.initCamera = function () {
+
+            this.camera = new THREE.PerspectiveCamera(this.defaultCamera.fov, this.aspectRatio, this.defaultCamera.near, this.defaultCamera.for);
+            this.camera.position = this.defaultCamera.posCamera;
+            this.camera.lookAt(this.defaultCamera.posCameraTarget);
+
+        };
+
+        // 灯光
+        this.initLight = function (lightColor, enabled) {
+
+            this.light = new THREE.SpotLight(lightColor);
+            this.light.position.set(-1000, 2000, 3000);
+            this.light.castShadow = enabled;
+
+            this.scene.add(light);
+            this.scene.add(new THREE.AmbientLight(0xffffff));
+
+        };
+
+        // 控制器
+        this.initControls = function () {
+
+            this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+
+            this.controls.minDistance = 5;
+            this.controls.maxDistance = 100;
+            this.controls.maxPolarAngle = 0.5 * Math.PI;
+
+        };
+
+        // 加载模型
+        this.initContent = function () {
+
+            let mtlLoader = new THREE.MTLLoader();
+
+            mtlLoader.setPath(url);
+
+            mtlLoader.load(name + 'mtl', function (materials) {
+
+                let objLoader = new THREE.OBJLoader();
+
+                objLoader.setMaterials(materials);
+                objLoader.setPath(url);
+
+                objLoader.load(name + 'obj', function (object) {
+
+                    // for (let i = 0; i < object.children.length; i++) {
+                    //
+                    //     let id = object.children[i].id;
+                    //
+                    //     // id = 125:地板, 94:两侧墙壁
+                    //     if (id === 125 || id === 94) {
+                    //
+                    //         // 判断是否是网格对象
+                    //         if (object.children[i].isMesh) {
+                    //
+                    //             object.children[i].receiveShadow = true;
+                    //
+                    //             for (let j = 0; j < object.children[i].material.length; j++) {
+                    //
+                    //                 // 设置双面渲染
+                    //                 object.children[i].material[j].side = THREE.DoubleSide;
+                    //
+                    //             }
+                    //         }
+                    //     }
+                    // }
+
+                    scene.add(object);
+
+                });
+            });
+
+        };
+
+        // 获取相交的对象数组
+        this.getIntersects = function (event, objects) {
+
+            let rayCaster = new THREE.Raycaster();
+            let mouse = new THREE.Vector2();
+
+            //通过点击的位置计算出rayCaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+            mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+            // 通过鼠标点的位置和当前相机的矩阵计算出rayCaster
+            rayCaster.setFromCamera(mouse, this.camera);
+
+            // 获取与射线相交的对象数组，其中的元素按照距离排序，越近的越靠前
+            return rayCaster.intersectObjects(objects);
+
+        };
+
+        this.createMesh = function (object) {
+
+            let material = new THREE.MeshBasicMaterial({color: 0x9B30FF});
+            material.transparent = true;
+            material.opacity = 0.6;
+
+            //替换焦点最近的一个物体
+            let replaceGeometry = object.geometry;
+            let replaceObject = new THREE.Mesh(replaceGeometry, material);
+            replaceObject.name = "replaceObject";
+
+            this.scene.add(replaceObject);
+            this.selectObject = object;
+
+        };
+
+        // 触摸触发的事件
+        this.onTouchStart = function (event) {
+
+            // 获取与射线相交的对象数组
+            let intersects = this.getIntersects(event, this.scene.children[2].children);
+
+            if (intersects.length > 0 && intersects[0].object.isMesh && intersects[0].object.id !== 95) {
+
+                let existObject = this.scene.getObjectByName('replaceObject');
+                this.arrayId.push(intersects[0].object.id);
+
+                if (this.arrayId.length > 1 && this.arrayId[0] !== this.arrayId[1]) {
+
+                    if (existObject) this.scene.remove(existObject);
+
+                    this.createMesh(intersects[0].object);
+
+                    // 从数组头部删除元素
+                    this.arrayId.shift();
+
+                } else {
+
+                    if (this.arrayId.length === 2) this.arrayId.shift();
+
+                    if (existObject != null) {
+
+                        this.scene.remove(existObject);
+                        this.selectObject = false;
+
+                    } else {
+
+                        this.createMesh(intersects[0].object);
+
+                    }
+                }
+
+            } else if (reset_camera) {
+
+                console.log("reset camera and controls!");
+                reset_camera = false;
+
+            } else {
+
+                alert("未选中 Mesh ！");
+
+            }
+
+        }
+
+
+    }
+
+</script>
+
+</body>
+</html>

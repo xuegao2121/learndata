@@ -15,38 +15,81 @@
         /*}*/
         span{
             display: block;
-            width: 150px;
-            height: 150px;
+            width: 50px;
+            height: 50px;
             text-align: center;
-            line-height: 150px;
-            background-color: slateblue;
+            line-height: 50px;
+            /*background-color: slateblue;*/
             /* border-dadius的值和宽高的值一样的时候，就显示成一个圆形*/
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 150px;
+            cursor: pointer;
         }
-        .nav{
-            text-align: center;
-        }
-        .nav > a{
-            display: inline-block;/*注意：1、行内元素和行内块级元素可以看做是文本例如：文字。*/
-            width: 80px;/*因此可以实现居中*/
-            height: 40px;
-            background-color: orchid;
-            text-align: center;
-            line-height: 40px;/*注意：2、行高等于盒子的高度，可以让单行文本水平居中。*/
-            border-radius: 10px;
-            text-decoration: none;
-        }
-        a:hover{
+        span:hover{
             background-color: orange;
+        }
+
+        #operate > #front {
+            /*display: inline-block;*/
+            /*width: 50px;*/
+            /*height: 50px;*/
+            /*font-size: 20px;*/
+            /*text-align: center;*/
+            /*line-height: 50px;*/
+            /*!*background-color: slateblue;*!*/
+            /*!* border-dadius的值和宽高的值一样的时候，就显示成一个圆形*!*/
+            /*border-radius: 150px;*/
+            /*text-decoration: none;*/
+            /*background: rgba(255, 255, 255, 0.6);*/
+            display: inline-block;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            /*padding: 2%;*/
+            text-align: center;
+            font-size: 40px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.6);
+            line-height: 1;
+            border-radius: 25px;
+        }
+        /*.nav{*/
+            /*text-align: center;*/
+        /*}*/
+        /*.nav > a{*/
+            /*display: inline-block;!*注意：1、行内元素和行内块级元素可以看做是文本例如：文字。*!*/
+            /*width: 80px;!*因此可以实现居中*!*/
+            /*height: 40px;*/
+            /*background-color: orchid;*/
+            /*text-align: center;*/
+            /*line-height: 40px;!*注意：2、行高等于盒子的高度，可以让单行文本水平居中。*!*/
+            /*border-radius: 10px;*/
+            /*text-decoration: none;*/
+        /*}*/
+        /*a:hover{*/
+            /*background-color: orange;*/
+        /*}*/
+
+        #label {
+            position: absolute;
+            padding: 1%;
+            text-align: center;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
+
+<div id="label">前</div>
+<hr>
+
 <div>这是div</div>
 <div>这是div</div>
 <div>这是div</div>
 <hr>
-<span>这是span</span>
+<span onclick="message();">前</span>
 <hr>
 <span>这是span</span>
 <hr>
@@ -54,10 +97,27 @@
 <hr>
 
     <div class="nav">
-        <a href="#">a链接</a>
-        <a href="#">a链接</a>
-        <a href="#">a链接</a>
+        <!--<a style="margin:0;padding:0;position:fixed;left:2px;bottom:2px;display:inline-block;z-index:9999;background:Green;" href="#">a链接</a>-->
+
+        <!--<a style="margin:0;padding:0;position:fixed;right:200px;bottom:2px;display:block;z-index:9999;background:Yellow;" href="#">a链接</a>-->
+        <!--<a href="#">a链接</a>-->
     </div>
 
+
+<div id="operate">
+    <!--<a id="front" style="margin:0;padding:0;position:fixed;left:2px;bottom:2px;display:inline-block;z-index:9999; href="#">前</a>-->
+    <a id="front" href="#">前</a>
+    <a href=""></a>
+    <a href=""></a>
+
+</div>
+
+<script>
+
+    function message() {
+        alert("this is a apan!");
+    }
+
+</script>
 </body>
 </html>
